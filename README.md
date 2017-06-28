@@ -1,2 +1,2 @@
 # Websocket-IoT-project
-Internship project
+Communicating with RPi using Android App over websockets.
