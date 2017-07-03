@@ -1,3 +1,4 @@
+import os
 import socket
 import sys
 from _thread import *
@@ -7,6 +8,7 @@ import time
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(18,GPIO.OUT)
+GPIO.setup(14,GPIO.OUT)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = ''
@@ -30,19 +32,31 @@ def threaded_client(conn):
                 
                 print ('Server output: ' + reply)
                 
-                if reply == 'light on':
-                        print ('Red led is ON !\n')
+                if reply == 'red light on':
+                        print ('Red led is ON!\n')
+                        GPIO.output(14,GPIO.HIGH)
+                        conn.send(str.encode('RED led is ON!'))
+                        os.system("espeak \"Red light is on\"")
+                        
+                elif reply == 'red light off':
+                        print ('Red led is OFF!\n')
+                        GPIO.output(14,GPIO.LOW)
+                        conn.send(str.encode('RED led is OFF!'))
+                        os.system("espeak \"Red light is off\"")
+                
+                elif reply == 'Orange light on':
+                        print ('Orange led is ON!\n')
                         GPIO.output(18,GPIO.HIGH)
-                        conn.send(str.encode('RED led is ON !'))
-                        #conn.send(str.encode('1'));
+                        conn.send(str.encode('ORANGE led is ON!'))
+                        os.system("espeak \"Orange light is on\"")
 
-                elif reply == 'light off':
-                        print ('Red led is OFF !\n')
+                elif reply == 'Orange light off':
+                        print ('Orange led is OFF!\n')
                         GPIO.output(18,GPIO.LOW)
-                        conn.send(str.encode('RED led is OFF !'))
-                        #conn.send(str.encode('2'));
+                        conn.send(str.encode('ORANGE led is OFF!'))
+                        os.system("espeak \"Orange light is off\"")
 
-                conn.sendall(str.encode(reply))
+                #conn.sendall(str.encode(reply))
         conn.close()
 
 while True:
